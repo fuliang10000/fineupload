@@ -30,60 +30,29 @@
 
 // Include the upload handler class
 require_once "handler.php";
-
-
-$uploader = new UploadHandler();
-
-// Specify the list of valid extensions, ex. array("jpeg", "xml", "bmp")
-// 文件类型限制
-$uploader->allowedExtensions = array(); // all files types allowed by default
-
-// Specify max file size in bytes.
-// 文件大小限制
-$uploader->sizeLimit = null;
-
-// Specify the input name set in the javascript.
-// 上传文件框
-$uploader->inputName = "qqfile"; // matches Fine Uploader's default inputName value by default
-
-// If you want to use the chunking/resume feature, specify the folder to temporarily save parts.
-// 定义分组文件存放位置
-$uploader->chunksFolder = "chunks";
-$uploader->thumb = true;//图片是否生成缩略图
-
 $method = $_SERVER["REQUEST_METHOD"];
-
-//上传目的文件夹
-$uploadDirectory =  $uploader->getPathName('member_avatar');
-//供应商订单文件存放
-//$uploadDirectory =  $uploader->getCommunityOrderPath('zlc000001','zenglingcheng','huace');
 if ($method == "POST") {
     header("Content-Type: text/plain");
-
+    $postData = $_POST;
+    $uploader = new UploadHandler();
+    $uploader->thumb = $postData['thumb'];//图片是否生成缩略图
+    //上传目的文件夹
+    $uploadDirectory = $uploader->getPathName($postData['filePath']);
     // 分组上传完成后对分组进行合并
     if (isset($_GET["done"])) {
         $result = $uploader->combineChunks($uploadDirectory); // 合并分组文件
-
     } else {
         //开始上传文件
         $result = $uploader->handleUpload($uploadDirectory);
         // 获取上传的名称
         $result["uploadName"] = $uploader->getUploadName();
-
     }
     echo json_encode($result);
-
-}
-
-
 // for delete file requests
-else if ($method == "DELETE") {
+} elseif ($method == "DELETE") {
     $result = $uploader->handleDelete($uploadDirectory);
     echo json_encode($result);
-}
-
-else {
+} else {
     header("HTTP/1.0 405 Method Not Allowed");
 }
-
 ?>
