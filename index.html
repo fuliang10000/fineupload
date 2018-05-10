@@ -46,7 +46,7 @@
 <div id="pauseUpload" class="buttons">暂停上传</div>
 <div id="continueUpload" class="buttons">继续上传</div>
 <script>
-//不要jquery入口
+	//不要jquery入口
     var fub = $('#basic_uploader_fine');
 	var messages = $('#messages');
 	var url = 'server/endpoint.php';
@@ -87,54 +87,55 @@
 				endpoint: url + "?done" // 分组上传完成后处理
 			}
 		},
-	  //回调函数
-      callbacks: {
-        //文件开始上传
-        onSubmit: function(id, fileName) {
-          messages.append('<div id="file-' + id + '" class="alert" style="margin: 20px 0 0">'+fileName+'<span  onClick="cancelUploadFile('+id+')">【取消上传】</span></div><span  onClick="pauseUploadFile('+id+')">【暂停上传】</span><span  onClick="continueUploadFile('+id+')">【继续上传】</span>');
-        },
-		onUpload: function(id, fileName) {
-          $('#file-' + id).addClass('alert-info')
-                          .html('<img src="loading.gif" alt="Initializing. Please hold."> ' +
-                                'Initializing ' +
-                                '“' + fileName + '”');
-        },
-		//进度条
-        onProgress: function(id, fileName, loaded, total) {//console.log(id);
-          if (loaded < total) {
-            progress = Math.round(loaded / total * 100) + '% of ' + Math.round(total / 1024) + ' kB';
-            $('#file-' + id).removeClass('alert-info')
-                            .html('<img src="loading.gif" width="20px" height="20px;" alt="In progress. Please hold."> ' +
-                                  '上传文件中......' +  progress);
-          } else {
-            $('#file-' + id).addClass('alert-info')
-                            .html('<img src="loading.gif" width="20px" height="20px;" alt="Saving. Please hold."> ' +
-                                  '上传文件中...... ');
-          }
-        },
-		//上传完成后
-        onComplete: function(id, fileName, responseJSON) {
-          if (responseJSON.success) {
-		  var img = responseJSON['target']
-            $('#file-' + id).removeClass('alert-info')
-                            .addClass('alert-success')
-                            .html('<i class="icon-ok"></i> ' +
-                                  '上传成功！ ' +
-                                  '“' + fileName + '”'
-                                );
-          } else {
-            $('#file-' + id).removeClass('alert-info')
-                            .addClass('alert-error')
-                            .html('<i class="icon-exclamation-sign"></i> ' +
-                                  'Error with ' +
-                                  '“' + fileName + '”: ' +
-                                  responseJSON.error);
-          }
-        },
-		onError: function(id, name, reason, maybeXhrOrXdr) {
-			console.log(id + '_' + name + '_' + reason);
-		},		
-      }		
+	  	//回调函数
+		callbacks: {
+			//文件开始上传
+			onSubmit: function(id, fileName) {
+				messages.append('<div id="file-' + id + '" class="alert" style="margin: 20px 0 0">'+fileName+'<span  onClick="cancelUploadFile('+id+')">【取消上传】</span></div><span  onClick="pauseUploadFile('+id+')">【暂停上传】</span><span  onClick="continueUploadFile('+id+')">【继续上传】</span>');
+			},
+			onUpload: function(id, fileName) {
+				$('#file-' + id).addClass('alert-info')
+						.html('<img src="loading.gif" alt="Initializing. Please hold."> ' +
+						'Initializing ' +
+						'“' + fileName + '”');
+			},
+			//进度条
+			onProgress: function(id, fileName, loaded, total) {
+				if (loaded < total) {
+					progress = Math.round(loaded / total * 100) + '% of ' + Math.round(total / 1024) + ' kB';
+					$('#file-' + id).removeClass('alert-info')
+							.html('<img src="loading.gif" width="20px" height="20px;" alt="In progress. Please hold."> ' +
+							'上传文件中......' +  progress);
+				} else {
+					$('#file-' + id).addClass('alert-info')
+							.html('<img src="loading.gif" width="20px" height="20px;" alt="Saving. Please hold."> ' +
+							'上传文件中...... ');
+				}
+			},
+			//上传完成后
+			onComplete: function(id, fileName, responseJSON) {
+				console.log(responseJSON);
+				if (responseJSON.success) {
+					var img = responseJSON['target'];
+					$('#file-' + id).removeClass('alert-info')
+							.addClass('alert-success')
+							.html('<i class="icon-ok"></i> ' +
+							'上传成功！ ' +
+							'“' + fileName + '”'
+					);
+				} else {
+					$('#file-' + id).removeClass('alert-info')
+							.addClass('alert-error')
+							.html('<i class="icon-exclamation-sign"></i> ' +
+							'Error with ' +
+							'“' + fileName + '”: ' +
+							responseJSON.error);
+				}
+			},
+			onError: function(id, name, reason, maybeXhrOrXdr) {
+				console.log(id + '_' + name + '_' + reason);
+			},
+		}
 	});
 
 	//手动触发上传上传
@@ -142,42 +143,39 @@
       uploader.uploadStoredFiles();
     });
 
-	//取消某一个上传
-	/* $('#cancelUpload').click(function() {
-	    uploader.cancel(0);
-    });*/
 	//取消所有未上传的文件
 	 $('#cancelAll').click(function() {
 		 //单个文件上传没有作用 因为已经在上传的不能使用这个cancelAll取消上传
 		 uploader.cancelAll();
     });
+
 	//暂停上传某个文件
 	$('#pauseUpload').click(function() {
 	     uploader.pauseUpload(0);
     });
+
 	// 继续上传
 	$('#continueUpload').click(function() {
 	     uploader.continueUpload(0);
     });
+
 	//取消上传
 	function cancelUploadFile(id)
 	{
-	    //alert(id)
 	    uploader.cancel(id);
 	}
+
 	//暂停上传某个文件
 	function pauseUploadFile(id)
 	{
 	  uploader.pauseUpload(id);
 	}
+
 	//继续上传某个文件
 	function continueUploadFile(id)
 	{
 	   uploader.continueUpload(id);
 	}
-//});
-	
-
 </script>
-  </body>
+</body>
 </html>
