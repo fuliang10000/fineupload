@@ -115,9 +115,9 @@ class UploadHandler {
                 'hash_name' => $fileHash,
                 'file_path' => $targetPath,
             ];
-            $res = $db->insertImages($data);
+            $db->insertImages($data);
         }
-        return array("success" => true, "uuid" => $uuid,'target'=>$targetPath,'hashVal'=>$fileHash,'thumb'=>$thumb,'save' => $res);
+        return array("success" => true, "uuid" => $uuid,'target'=>$targetPath,'hashVal'=>$fileHash,'thumb'=>$thumb);
     }
 
     /**
@@ -256,9 +256,9 @@ class UploadHandler {
                             'hash_name' => $fileHash,
                             'file_path' => $target,
                         ];
-                        $res = $db->insertImages($data);
+                        $db->insertImages($data);
                     }
-                    return array('success'=> true, "uuid" => $uuid,'trueName'=>$name,'target'=>$target,'hashVal'=>$fileHash,'thumb'=>$thumb, 'save' => $res);
+                    return array('success'=> true, "uuid" => $uuid,'trueName'=>$name,'target'=>$target,'hashVal'=>$fileHash,'thumb'=>$thumb);
                 }
             }
             return array('error'=> 'Could not save uploaded file.' .
