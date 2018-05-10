@@ -1,3 +1,8 @@
+<?php
+require_once 'conn/conn.php';
+$db = new DB();
+$rows = $db->getAllList();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,6 +39,12 @@
 	text-align:center;
 	line-height:30px;
 }
+	td {
+		border:1px solid black
+	}
+	th {
+		border:1px solid black
+	}
 </style>
 <body>
 <!--定义按钮-->
@@ -45,6 +56,34 @@
 <div id="cancelAll" class="buttons">取消全部</div>
 <div id="pauseUpload" class="buttons">暂停上传</div>
 <div id="continueUpload" class="buttons">继续上传</div>
+<table style="border:1px solid black">
+	<thead>
+	<tr>
+		<th>ID</th>
+		<th>文件真实名称</th>
+		<th>文件hash值</th>
+		<th>文件后缀名</th>
+		<th>单位KB</th>
+		<th>文件真实路径</th>
+		<th>文件上传时间</th>
+		<th>操作</th>
+	</tr>
+	</thead>
+	<?php if ($rows) { ?>
+	<?php foreach ($rows as $row) { ?>
+	<tr>
+		<td><?php echo $row['id']?></td>
+		<td><?php echo $row['real_name']?></td>
+		<td><?php echo $row['hash_name']?></td>
+		<td><?php echo $row['suffix_name']?></td>
+		<td><?php echo $row['file_size']?></td>
+		<td><?php echo $row['file_path']?></td>
+		<td><?php echo date('Y-m-d H:i:s',$row['update_time'])?></td>
+		<td></td>
+	</tr>
+	<?php } ?>
+	<?php } ?>
+</table>
 <script>
 	//不要jquery入口
     var fub = $('#basic_uploader_fine');
@@ -65,7 +104,7 @@
 			endpoint: url,
 			params: {
 				thumb: false,//是否生成缩略图
-				saveFlag: false,//是否保存到数据库
+				saveFlag: true,//是否保存到数据库
 				filePath: 'member_order', /*供应商注册文件夹*/
 				//文件所属信息
 				relate: {

@@ -19,6 +19,7 @@ class UploadHandler {
     protected $uploadName;
     public $thumb = false;//是否生成缩略图默认不生成
     public $root = 'uploads/';
+    public $saveFlag = false; //是否保存到数据库
 
     public function __construct()
     {
@@ -108,6 +109,14 @@ class UploadHandler {
         }
         //文件hash值
         $fileHash = $this->getFileHashVal($targetPath);
+        if ($this->saveFlag) {
+            $db = new DB();
+            $data = [
+                'hash_name' => $fileHash,
+                'file_path' => $targetPath,
+            ];
+            $db->insertImages($data);
+        }
         return array("success" => true, "uuid" => $uuid,'target'=>$targetPath,'hashVal'=>$fileHash,'thumb'=>$thumb);
     }
 
@@ -241,6 +250,14 @@ class UploadHandler {
                     }
                     //文件hash值
                      $fileHash = $this->getFileHashVal($target);
+                    if ($this->saveFlag) {
+                        $db = new DB();
+                        $data = [
+                            'hash_name' => $fileHash,
+                            'file_path' => $target,
+                        ];
+                        $db->insertImages($data);
+                    }
                     return array('success'=> true, "uuid" => $uuid,'trueName'=>$name,'target'=>$target,'hashVal'=>$fileHash,'thumb'=>$thumb);
                 }
             }

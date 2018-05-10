@@ -36,6 +36,7 @@ if ($method == "POST") {
     $postData = $_POST;
     $uploader = new UploadHandler();
     $uploader->thumb = $postData['thumb'];//图片是否生成缩略图
+    $uploader->saveFlag = $postData['saveFlag'];//保存到数据库
     //上传目的文件夹
     $uploadDirectory = $uploader->getPathName($postData['filePath']);
     // 分组上传完成后对分组进行合并
