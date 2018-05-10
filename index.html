@@ -102,7 +102,7 @@
 			//进度条
 			onProgress: function(id, fileName, loaded, total) {
 				if (loaded < total) {
-					progress = Math.round(loaded / total * 100) + '% of ' + Math.round(total / 1024) + ' kB';
+					var progress = Math.round(loaded / total * 100) + '% of ' + Math.round(total / 1024) + ' kB';
 					$('#file-' + id).removeClass('alert-info')
 							.html('<img src="loading.gif" width="20px" height="20px;" alt="In progress. Please hold."> ' +
 							'上传文件中......' +  progress);
@@ -134,17 +134,17 @@
 			},
 			onError: function(id, name, reason, maybeXhrOrXdr) {
 				console.log(id + '_' + name + '_' + reason);
-			},
+			}
 		}
 	});
 
 	//手动触发上传上传
-	 $('#triggerUpload').click(function() {
+	$('#triggerUpload').click(function() {
       uploader.uploadStoredFiles();
     });
 
 	//取消所有未上传的文件
-	 $('#cancelAll').click(function() {
+	$('#cancelAll').click(function() {
 		 //单个文件上传没有作用 因为已经在上传的不能使用这个cancelAll取消上传
 		 uploader.cancelAll();
     });
