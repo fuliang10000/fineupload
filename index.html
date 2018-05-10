@@ -49,7 +49,7 @@
 //不要jquery入口
     var fub = $('#basic_uploader_fine');
 	var messages = $('#messages');
-
+	var url = '120.79.184.17/fineupload/server/endpoint.php';
 	var uploader = new qq.FineUploaderBasic({
 		debug: false,       // 开启调试模式
 		multiple: true,    // 多文件上传
@@ -62,7 +62,7 @@
 		},
 		// 远程请求地址（相对或者绝对地址）
 		request: {
-			endpoint: 'server/endpoint.php',
+			endpoint: url,
 			params: {
 				thumb: false,//是否生成缩略图
 				saveFlag: false,//是否保存到数据库
@@ -84,7 +84,7 @@
 				enabled: true // 开启并发分组上传，默认并发3个
 			},
 			success: {
-				endpoint: "server/endpoint.php?done" // 分组上传完成后处理
+				endpoint: url + "?done" // 分组上传完成后处理
 			}
 		},
 	  //回调函数
